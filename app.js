@@ -112,7 +112,6 @@ app.post("/todos/", async (request, response) => {
         todo
     VALUES
         (
-            id = 10,
             todo = '${todo}',
             priority = '${priority}',
             status = '${status}'
