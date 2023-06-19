@@ -5,7 +5,7 @@ const app = express();
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
-const dbPath = path.join(__dirname, "aodoApplication.db");
+const dbPath = path.join(__dirname, "todoApplication.db");
 
 let db = null;
 
@@ -105,9 +105,8 @@ app.get("/todos/:todoId/", async (request, response) => {
 
 //Create todo in todo table API
 app.post("/todos/", async (request, response) => {
-  const { id } = request.params;
   const todoDetails = request.body;
-  const { todo, priority, status } = todoDetails;
+  const { id, todo, priority, status } = todoDetails;
   const createTodoQuery = `
     INSERT INTO
         todo(id, todo, priority, status)
@@ -119,6 +118,8 @@ app.post("/todos/", async (request, response) => {
             '${status}'
         );`;
   const dbResponse = await db.run(createTodoQuery);
-  console.log(dbResponse);
+
   response.send("Todo Successfully Added");
 });
+
+module.exports = app;
