@@ -33,10 +33,5 @@ Content-Type: application/json
     "status": "DONE"
 },
 
-{
-    "Priority": "HIGH"
-},
-
-{
-    "todo": "Some task"
-}
+###
+DELETE http://localhost:3000/todos/5/

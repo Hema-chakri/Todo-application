@@ -119,61 +119,20 @@ app.post("/todos/", async (request, response) => {
             '${status}'
         );`;
   const dbResponse = await db.run(createTodoQuery);
+  const addedId = dbResponse.lastId;
 
   response.send("Todo Successfully Added");
 });
 
-//Update specific todo API
-app.put("/todos/:todoId/", async (request, response) => {
+//Delete specific API
+app.delete("/todos/:todoId/", async (request, response) => {
   const { todoId } = request.params;
-  let columnUpdate = "";
-  const bodyDetails = request.body;
-  const { todo, priority, status } = bodyDetails;
-  const updateTodo = (requestBody)=>{
-      return{
-          requestBody.todo !== undefined;
-      };
-  };
-  const updatePriority = (requestBody)=>{
-      return {
-          requestBody.priority !== undefined;
-      };
-  };
-  const updateStatus = (requestBody) =>{
-      return{
-          requestBody.status !== undefined;
-      };
-  };
-  switch (true) {
-    case updateTodo(request.body):
-        updateColumn = 
-        `UPDATE todo
-        SET 
-            todo = ${todo}
-        WHERE 
-            id = ${ todoId };
-        `;
-      break;
-    case updatePriority(request.body):
-        updateColumn = `
-        UPDATE todo
-        SET
-            priority = ${priority}
-        WHERE 
-            id = ${ todoId };`;
-      break;
-    case updateStatus(request.body):
-        updateColumn = `
-        UPDATE todo
-        SET
-            status = ${status}
-        WHERE
-            id = ${ todoId };`;
-      break;
-  }
-  
-  await db.run(updateTodoQuery);
-  response.send(`${updateColumn} Updated`);
+  const deleteSpecificTodo = `
+    DELETE
+    FROM todo
+    WHERE id = ${todoId};`;
+  await db.run(deleteSpecificTodo);
+  response.send("Todo Deleted");
 });
 
 module.exports = app;
