@@ -30,8 +30,8 @@ PUT http://localhost:3000/todos/2/
 Content-Type: application/json
 
 {
-    "status": "DONE"
-},
+    "todo": "Some task"
+}
 
 ###
 DELETE http://localhost:3000/todos/5/

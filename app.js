@@ -118,10 +118,50 @@ app.post("/todos/", async (request, response) => {
             '${priority}',
             '${status}'
         );`;
-  const dbResponse = await db.run(createTodoQuery);
-  const addedId = dbResponse.lastId;
+  await db.run(createTodoQuery);
 
   response.send("Todo Successfully Added");
+});
+
+//Update specific Todo API
+app.put("/todos/:todoId/", async (request, response) => {
+  const { todoId } = request.params;
+  let updateColumn = "";
+  const requestBody = request.body;
+  switch (true) {
+    case requestBody.status !== undefined:
+      updateColumn = "Status";
+      break;
+    case requestBody.priority !== undefined:
+      updateColumn = "Priority";
+      break;
+    case requestBody.todo !== undefined:
+      updateColumn = "Todo";
+      break;
+  }
+  const previousTodoQuery = `
+    SELECT
+      *
+    FROM
+      todo
+    WHERE 
+      id = ${todoId};`;
+  const previousTodo = await db.get(previousTodoQuery);
+
+  const { todo, priority, status } = previousTodo;
+
+  const updateTodoQuery = `
+    UPDATE
+      todo
+    SET
+      todo='${todo}',
+      priority='${priority}',
+      status='${status}'
+    WHERE
+      id = ${todoId};`;
+
+  await db.run(updateTodoQuery);
+  response.send(`${updateColumn} Updated`);
 });
 
 //Delete specific API
